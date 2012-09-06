@@ -1,0 +1,21 @@
+!!!
+%html
+  %head
+    %title Teachme
+    = stylesheet_link_tag    "application", :media => "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+  %body
+    .navigation
+      - if signed_in?
+        %span
+          = "Signed in as #{current_user.email}"
+        %span
+          = link_to 'Sign out', destroy_user_session_path, method: 'delete'
+      - else
+        %span
+          = link_to 'Sign in', new_user_session_path
+        %span
+          = link_to 'Sign up', new_user_registration_path
+
+    = yield

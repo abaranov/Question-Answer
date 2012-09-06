@@ -1,0 +1,22 @@
+%section#questions
+  .page-header
+    %h1 Questions
+  .row
+    .span4
+      .well
+        #question.title
+          Here you can post questions to which we will reply soon
+
+        #question.form
+
+          = form_for @question do |form|
+            .name
+              Question title
+            .question_field
+              = form.text_field :title
+            .question_field
+              = form.text_area :body
+            .actions
+              = form.submit
+    .span8
+      -#= render :partial => "all_questions"
