@@ -1,0 +1,16 @@
+#question.title
+  Here you can post question
+
+#question.form
+
+  = form_for @question do |form|
+    .name
+      Question title
+    .question_field
+      = form.text_field :title
+    .question_field
+      = form.text_area :body
+    .actions
+      = form.submit
+
+    = link_to "back", :back

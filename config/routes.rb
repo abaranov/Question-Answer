@@ -1,9 +1,27 @@
 QuestionAnswer::Application.routes.draw do
 
 
+  get "answers/new"
+
+  get "answers/index"
+
+  get "answers/create"
+
+  get "answers/edit"
+
+  get "answers/update"
+
+  get "answers/destroy"
+
   devise_for :users
-  resources :questions
-  root :to => "home#index"
+
+  resources :questions do
+    resources :answers, :only => %w(new create edit)
+  end
+
+  resources :answers
+
+  root :to => "questions#index"
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

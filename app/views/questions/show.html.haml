@@ -1,0 +1,29 @@
+%div
+  Title
+  %br
+  = @question.title
+  %br
+  Question
+  %br
+  = @question.body
+  %br
+  Rating
+  = @question.rate
+  %br
+  Set rating:
+  %br
+  = select_tag "rate", options_for_select((-5..5), :selected => 0)
+  = link_to "set", question_path(@question, :rate => params[:rate])
+%div
+  - if @answers
+    - @answers.each do |answer|
+      = answer.body
+      - if current_user && current_user == answer.user
+        = link_to "Edit answer", edit_question_answer_path(answer)
+        = link_to "Delete answer", answer_path(answer), :method => :delete
+%div
+  = link_to "New answer", new_question_answer_path(@question)
+  = link_to "All questions", questions_path
+  - if current_user && current_user == @question.user
+    = link_to "Edit question", edit_question_path(@question)
+    = link_to "Delete question", question_path(@question), :method => :delete

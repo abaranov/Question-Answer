@@ -1,41 +1,55 @@
 class QuestionsController < ApplicationController
 
+  before_filter :authenticate_user!, :except => [:show, :index]
+
+  def new
+    @question = Question.new
+  end
+  
+  def create
+    @question = Question.new(params[:question].merge({user_id: current_user.id}))
+    @question.save
+    render :action => "show"
+  end
+
+  def update
+    @question = Question.find(params[:id])
+    @question.update_attributes(params[:question])
+    render :action => "show"
+  end
+
+  def show
+    @question = Question.find(params[:id])
+    @answers = Answer.where(:question_id => params[:id])
+    set_rate
+  end
+
+  def set_rate
+    if params[:commit]
+      exit
+
+    end
+  end
 
   def index
-    @questions = Question.all
-    @question = Question.new
-    #@answer = Answer.new
-  end
 
-  def create
-    @question = Question.new(params[:question])
-    @question.save
-    #respond_with @question
+    #if qewr
+    #  @questions = Question.order("rate ASC").last(10)
+    #elsif  dsgesr
+    #  @questions = Answer.select("question_id")
+    #else
+      @questions = Question.last(10)
+    #end
   end
-
-  #def answer
-  #  @questions = Question.all
-  #  @question = Question.new
-  #  @answer = Answer.new(params[:answer])
-  #  @answer.save
-  #  redirect_to :action => "index"
-  #end
 
   def edit
     @question = Question.find(params[:id])
   end
 
-  def update
-    @questions = Question.all
-    @question = Question.find(params[:id])
-    @question.update_attributes(params[:question])
-    render :action => "index"
-  end
-
   def destroy
-    @questions = Question.all
     @question = Question.find(params[:id])
     @question.destroy
+    @questions = Question.all
     render :action => "index"
   end
 end
