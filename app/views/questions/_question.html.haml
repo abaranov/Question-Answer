@@ -1,3 +1,11 @@
 .question
-  = link_to truncate(question.title, :length => 30), question_path(question.id), :class => "question_link"
-  = question.rate
+  %table#table
+    %tr
+      %td.second
+        = link_to truncate(question.title, :length => 30), question_path(question.id), :class => "question_link"
+      %td.first
+        Rating:
+        = question.rate
+      %td.first
+        Answers:
+        = question.answers.count

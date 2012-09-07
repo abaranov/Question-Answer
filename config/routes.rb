@@ -1,18 +1,5 @@
 QuestionAnswer::Application.routes.draw do
 
-
-  get "answers/new"
-
-  get "answers/index"
-
-  get "answers/create"
-
-  get "answers/edit"
-
-  get "answers/update"
-
-  get "answers/destroy"
-
   devise_for :users
 
   resources :questions do

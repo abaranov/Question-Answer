@@ -1,55 +1,51 @@
 class QuestionsController < ApplicationController
 
   before_filter :authenticate_user!, :except => [:show, :index]
+    before_filter :fetch_question, :only => [:update, :show, :edit, :destroy]
 
   def new
     @question = Question.new
   end
   
   def create
-    @question = Question.new(params[:question].merge({user_id: current_user.id}))
-    @question.save
+    @question = Question.create(params[:question].merge({user_id: current_user.id}))
     render :action => "show"
   end
 
   def update
-    @question = Question.find(params[:id])
-    @question.update_attributes(params[:question])
-    render :action => "show"
+    if params[:rate]
+      @question.update_attribute("rate", @question.rate + params[:rate].to_i)
+    else
+      @question.update_attributes(params[:question])
+    end
+    redirect_to question_path(@question)
   end
 
   def show
-    @question = Question.find(params[:id])
-    @answers = Answer.where(:question_id => params[:id])
-    set_rate
-  end
-
-  def set_rate
-    if params[:commit]
-      exit
-
-    end
+    @answers = @question.answers
   end
 
   def index
-
-    #if qewr
-    #  @questions = Question.order("rate ASC").last(10)
-    #elsif  dsgesr
-    #  @questions = Answer.select("question_id")
-    #else
-      @questions = Question.last(10)
-    #end
-  end
-
-  def edit
-    @question = Question.find(params[:id])
+    @questions = case
+      when params[:by_rate]
+        Question.order("rate").last(10)
+      when params[:by_answers]
+        Question.joins("LEFT JOIN `answers` ON `questions`.id = answers.question_id").group("questions.id").order("COUNT(answers.id)").last(10)
+      when params[:commit]
+        Question.search(params[:query])
+      else
+        Question.last(10)
+    end
   end
 
   def destroy
-    @question = Question.find(params[:id])
-    @question.destroy
-    @questions = Question.all
-    render :action => "index"
+    @question.destroy and redirect_to questions_path
+  end
+
+  private
+
+  def fetch_question
+    @question = Question.find_by_id(params[:id])
   end
 end
+

@@ -1,30 +1,30 @@
 class AnswersController < ApplicationController
 
   before_filter :authenticate_user!
+  before_filter :fetch_answer, :only => [:update, :edit, :destroy]
 
   def new
     @answer = Answer.new(:question_id => params[:question_id])
   end
 
   def create
-    @answer = Answer.new(params[:answer].merge({user_id: current_user.id}))
-    @answer.save
+    @answer = Answer.create(params[:answer].merge({user_id: current_user.id}))
     redirect_to question_path(@answer.question)
   end
 
-  def edit
-    @answer = Answer.find(params[:question_id])
-  end
-
   def update
-    @answer = Answer.find(params[:id])
     @answer.update_attributes(params[:answer])
     redirect_to question_path(@answer.question)
   end
 
   def destroy
-    @answer = Answer.find(params[:id])
     @answer.destroy
     redirect_to question_path(@answer.question)
+  end
+
+  private
+
+  def fetch_answer
+    @answer = Answer.find_by_id(params[:id])
   end
 end

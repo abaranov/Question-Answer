@@ -3,5 +3,15 @@
     %h1 Questions
   .links
     = link_to "New question", new_question_path
+    %br
+    Sort:
+    =link_to "by rate", questions_path(:by_rate => 1)
+    ,
+    =link_to "by answers", questions_path(:by_answers => 1)
+    ,
+    =link_to "last 10", questions_path
+    = form_tag questions_path, :method => "get" do
+      = text_field_tag  'query'
+      = submit_tag "search"
   #all_questions
     = render @questions.reverse

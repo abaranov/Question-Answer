@@ -1,8 +1,8 @@
 class CreateQuestions < ActiveRecord::Migration
   def change
     create_table :questions do |t|
-      t.string :title
-      t.string :body
+      t.string :title, :limit => 140
+      t.string :body, :limit => 5000
       t.integer :user_id
 
       t.timestamps
