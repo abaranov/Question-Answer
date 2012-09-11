@@ -27,19 +27,12 @@
   Answers:
   - if @answers
     %table#table3
-      - @answers.each do |answer|
-        %tr
-          %td
-            = answer.body
-          %td.first
-            - if current_user && current_user == answer.user
-              = link_to "Edit answer", edit_question_answer_path(@question, answer)
-              = link_to "Delete answer", answer_path(answer), :method => :delete
+      = render @answers
 
 %div
   %br
   = link_to "New answer", new_question_answer_path(@question)
   = link_to "All questions", questions_path
-  - if current_user && current_user == @question.user
+  - if can?(:modify, @question)
     = link_to "Edit question", edit_question_path(@question)
     = link_to "Delete question", question_path(@question), :method => :delete

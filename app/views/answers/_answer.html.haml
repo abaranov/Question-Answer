@@ -1,0 +1,7 @@
+%tr
+  %td
+    = answer.body
+  %td.first
+    - if can?(:modify, answer)
+      = link_to "Edit answer", edit_question_answer_path(@question, answer)
+      = link_to "Delete answer", answer_path(answer), :method => :delete

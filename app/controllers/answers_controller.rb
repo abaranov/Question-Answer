@@ -2,6 +2,7 @@ class AnswersController < ApplicationController
 
   before_filter :authenticate_user!
   before_filter :fetch_answer, :only => [:update, :edit, :destroy]
+  before_filter :redirect_if_cannot_modify, :only => [:update, :destroy, :edit]
 
   def new
     @answer = Answer.new(:question_id => params[:question_id])
@@ -26,5 +27,9 @@ class AnswersController < ApplicationController
 
   def fetch_answer
     @answer = Answer.find_by_id(params[:id])
+  end
+
+  def redirect_if_cannot_modify
+    redirect_to root_path if cannot?(:modify, @answer)
   end
 end

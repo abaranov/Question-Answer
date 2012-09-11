@@ -4,6 +4,8 @@ class Question < ActiveRecord::Base
   belongs_to :user
   has_many :answers
 
+
+
   def self.search(query)
     where("title LIKE ?", "%#{query}%")
   end

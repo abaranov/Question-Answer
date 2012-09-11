@@ -1,7 +1,8 @@
 class QuestionsController < ApplicationController
 
   before_filter :authenticate_user!, :except => [:show, :index]
-    before_filter :fetch_question, :only => [:update, :show, :edit, :destroy]
+  before_filter :fetch_question, :only => [:update, :show, :edit, :destroy]
+  before_filter :redirect_if_cannot_modify, :only => [:update, :destroy, :edit]
 
   def new
     @question = Question.new
@@ -46,6 +47,10 @@ class QuestionsController < ApplicationController
 
   def fetch_question
     @question = Question.find_by_id(params[:id])
+  end
+
+  def redirect_if_cannot_modify
+    redirect_to root_path if cannot?(:modify, @question)
   end
 end
 
