@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120910114237) do
+ActiveRecord::Schema.define(:version => 20120911121544) do
 
   create_table "answers", :force => true do |t|
     t.string   "body",        :limit => 10000
@@ -22,6 +22,9 @@ ActiveRecord::Schema.define(:version => 20120910114237) do
     t.datetime "updated_at",                                  :null => false
   end
 
+  add_index "answers", ["question_id"], :name => "index_answers_on_question_id"
+  add_index "answers", ["user_id"], :name => "index_answers_on_user_id"
+
   create_table "questions", :force => true do |t|
     t.string   "title",      :limit => 140
     t.string   "body",       :limit => 5000
@@ -30,6 +33,19 @@ ActiveRecord::Schema.define(:version => 20120910114237) do
     t.datetime "updated_at",                                :null => false
     t.integer  "rate",                       :default => 0, :null => false
   end
+
+  add_index "questions", ["user_id"], :name => "index_questions_on_user_id"
+
+  create_table "rate_limits", :force => true do |t|
+    t.integer  "owner_id"
+    t.integer  "issue_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "rate_limits", ["issue_id"], :name => "index_rate_limits_on_issue_id"
+  add_index "rate_limits", ["owner_id", "issue_id"], :name => "index_rate_limits_on_owner_id_and_issue_id", :unique => true
+  add_index "rate_limits", ["owner_id"], :name => "index_rate_limits_on_owner_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false

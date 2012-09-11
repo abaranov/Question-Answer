@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
 
   has_many :questions
   has_many :answers
+  has_many :rate_limits, :foreign_key => "owner_id"
 
   def admin?
     role == 'admin'

@@ -31,13 +31,6 @@
   text-align: right;
 }
 
-#spoiler {
-  padding: 4px;
-  border-color: #52A9EB;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(82, 168, 236, .6);
-  text-indent: 20px;
-}
-
 #table td {
   padding: 4px;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(82, 168, 236, .6);
@@ -65,4 +58,10 @@
 
 .second {
   width: 300px;
+}
+
+.flash {
+  font-size: medium;
+  font-weight: bold;
+  color: #ff0000;
 }

@@ -2,7 +2,7 @@ class QuestionsController < ApplicationController
 
   before_filter :authenticate_user!, :except => [:show, :index]
   before_filter :fetch_question, :only => [:update, :show, :edit, :destroy]
-  before_filter :redirect_if_cannot_modify, :only => [:update, :destroy, :edit]
+  before_filter :redirect_if_cannot_modify, :only => [:destroy, :edit]
 
   def new
     @question = Question.new
@@ -15,7 +15,12 @@ class QuestionsController < ApplicationController
 
   def update
     if params[:rate]
-      @question.update_attribute("rate", @question.rate + params[:rate].to_i)
+      if RateLimit.where(:owner_id => current_user.id, :issue_id => @question.id).first
+        flash[:notice] = "You have entered a rating for this question"
+      else
+        @question.rate_limits.create(:owner_id => current_user.id, :issue_id => @question.id)
+        @question.update_attribute("rate", @question.rate + params[:rate].to_i) if (-6 < params[:rate].to_i) && (params[:rate].to_i < 6)
+      end
     else
       @question.update_attributes(params[:question])
     end
