@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :user do
     sequence :email do |n|
-      "sperson#{n}@example.com"
+      "person#{n}@example.com"
     end
     password "FooBar8"
     password_confirmation "FooBar8"
@@ -12,6 +12,7 @@ FactoryGirl.define do
       "admin#{n}@example.com"
     end
     password "Admin8"
+    password_confirmation "Admin8"
     role "admin"
   end
 
