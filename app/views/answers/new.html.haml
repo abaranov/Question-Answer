@@ -2,12 +2,4 @@
   Here you can post answer
 
 #answer.form
-
-  = form_for @answer do |form|
-    = form.hidden_field :question_id
-    .answer_field
-      = form.text_area :body
-    .actions
-      = form.submit
-
-  = link_to "back", question_path(@answer.question)
+  = render partial: "form_for_answer"

@@ -9,8 +9,14 @@ class QuestionsController < ApplicationController
   end
   
   def create
+
     @question = Question.create(params[:question].merge({user_id: current_user.id}))
-    render :action => "show"
+    if @question.id
+      render :action => "show"
+    else
+      flash.now[:notice] = "Can't be blank"
+      render :action => "new"
+    end
   end
 
   def update

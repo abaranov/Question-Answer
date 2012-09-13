@@ -6,6 +6,8 @@ class Question < ActiveRecord::Base
 
   has_many :rate_limits, :foreign_key => "issue_id"
 
+  validates_presence_of :title, :body, :user_id
+
   def self.search(query)
     where("title LIKE ?", "%#{query}%")
   end

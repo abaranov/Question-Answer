@@ -10,7 +10,13 @@ class AnswersController < ApplicationController
 
   def create
     @answer = Answer.create(params[:answer].merge({user_id: current_user.id}))
-    redirect_to question_path(@answer.question)
+
+    if @answer.id
+      redirect_to question_path(@answer.question)
+    else
+      flash.now[:notice] = "Can't be blank"
+      render :action => "new"
+    end
   end
 
   def update

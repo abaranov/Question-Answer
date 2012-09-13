@@ -3,14 +3,5 @@
 
 #question.form
 
-  = form_for @question do |form|
-    .name
-      Question title
-    .question_field
-      = form.text_field :title
-    .question_field
-      = form.text_area :body
-    .actions
-      = form.submit
-
-    = link_to "back", :back
+  = render partial: "form_for_question"
+  = link_to "back", :back

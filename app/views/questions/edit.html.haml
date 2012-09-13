@@ -2,15 +2,5 @@
   Edit question
 
 #question.form
-
-  = form_for @question do |form|
-    .name
-      Question title
-    .question_field
-      = form.text_field :title
-    .question_field
-      = form.text_area :body
-    .actions
-      = form.submit
-
+  = render partial: "form_for_question"
   = link_to "back", question_path(@question.id)
